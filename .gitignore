@@ -1,0 +1,10 @@
+build
+*.o
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+*.log
+*.swp
+*.local
+main
+*.qm
