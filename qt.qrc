@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+	<file>data/network.svg</file>
+	<file>data/network.ico</file>
+	<file>data/network.png</file>
+	<file>lang/de.qm</file>
+</qresource>
+</RCC>
