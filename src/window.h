@@ -30,6 +30,8 @@
 #include <QListWidget>
 #include <QLabel>
 #include <QPushButton>
+#include <QAction>
+#include <QMenu>
 
 class Window:public QWidget
 {
