@@ -6,6 +6,7 @@ or whatever network.
 # Compilation
 
 $ qmake
+$ lrelease discovery.pro
 $ make
 
 # Developer
