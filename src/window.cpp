@@ -23,6 +23,12 @@
 #include <QtGui>
 #include <QtNetwork>
 
+#include <QMessageBox>
+#include <QApplication>
+#include <QInputDialog>
+#include <QIcon>
+#include <QLineEdit>
+
 Window::Window(QWidget *parent):QWidget(parent)
 {
 	QSettings set;

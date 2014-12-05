@@ -24,7 +24,6 @@
 #include <receiver.h>
 #include <QtCore>
 #include <QWidget>
-#include <QIcon>
 #include <QSystemTrayIcon>
 #include <QVBoxLayout>
 #include <QListWidget>
