@@ -29,9 +29,9 @@ int main(int argc,char **argv)
 	QApplication app(argc,argv);
 
 	//set the config-keys
-	QCoreApplication::setOrganizationName("benaryorg");
-	QCoreApplication::setOrganizationDomain("benary.org");
-	QCoreApplication::setApplicationName("discover");
+	app.setOrganizationName("benaryorg");
+	app.setOrganizationDomain("benary.org");
+	app.setApplicationName("discover");
 
 	//load our favourite locale
 	QLocale locale=QLocale::system();
