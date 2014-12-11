@@ -62,7 +62,9 @@ Window::Window(QWidget *parent):QWidget(parent)
 	this->tray->setToolTip(tr("Peer Discovery"));
 
 	this->quitaction=new QAction(tr("&Quit"),this);
+	this->quitaction->setShortcut(Qt::Key_Q|Qt::CTRL);
 	connect(this->quitaction,SIGNAL(triggered()),qApp,SLOT(quit()));
+	this->addAction(this->quitaction);
 	this->traymenu=new QMenu(this);
 	this->traymenu->addAction(this->quitaction);
 	this->tray->setContextMenu(this->traymenu);
