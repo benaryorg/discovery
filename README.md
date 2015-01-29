@@ -9,19 +9,19 @@ or whatever network.
 
 Only run once:
 
-$ qmake
+	$ qmake
 
 ## Generating Languages Files
 
 Only needs to be run if the language files changed:
 
-$ lrelease discovery.pro
+	$ lrelease discovery.pro
 
 ## Building
 
 Run always:
 
-$ make
+	$ make
 
 # Developer
 
