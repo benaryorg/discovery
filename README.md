@@ -29,5 +29,7 @@ Just benaryorg.
 
 # License
 
-As usual, GPL.
-See `LICENSE` file.
+MIT. No, I do not use the GPL anymore.
+
+[Here](http://www.occupygpl.org/) some information.
+
