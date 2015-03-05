@@ -34,7 +34,7 @@ class Receiver:public QObject
 {
 	Q_OBJECT
 public:
-	Receiver(void);
+	Receiver(QObject *parent=0);
 	~Receiver(void);
 
 	QString getIp(QString name);

@@ -45,18 +45,18 @@ Window::Window(QWidget *parent):QWidget(parent)
 	this->move(set.value("window_pos",QPoint(0,0)).value<QPoint>());
 	this->resize(set.value("window_dim",QSize(192,300)).value<QSize>());
 
-	this->layout=new QVBoxLayout();
+	this->layout=new QVBoxLayout(this);
 	this->setLayout(this->layout);
 
-	this->list=new QListWidget();
+	this->list=new QListWidget(this);
 	connect(this->list,SIGNAL(itemDoubleClicked(QListWidgetItem *)),this,SLOT(copy(QListWidgetItem *)));
 
-	this->label=new QLabel(tr("Double click an entry to copy it."));
+	this->label=new QLabel(tr("Double click an entry to copy it."),this);
 
-	this->namechanger=new QPushButton(set.value("name",tr("Change your name!")).toString());
+	this->namechanger=new QPushButton(set.value("name",tr("Change your name!")).toString(),this);
 	connect(this->namechanger,SIGNAL(clicked()),this,SLOT(changeName()));
 
-	this->notifications=new QPushButton(set.value("notifications",true).toBool()?tr("Stop Notifications!"):tr("Start Notifications!"));
+	this->notifications=new QPushButton(set.value("notifications",true).toBool()?tr("Stop Notifications!"):tr("Start Notifications!"),this);
 	connect(this->notifications,SIGNAL(clicked()),this,SLOT(toggleNotifications()));
 
 	this->layout->addWidget(this->label);
@@ -81,7 +81,7 @@ Window::Window(QWidget *parent):QWidget(parent)
 
 	try
 	{
-		this->receiver=new Receiver();
+		this->receiver=new Receiver(this);
 	}
 	catch(int ex)
 	{
@@ -92,7 +92,7 @@ Window::Window(QWidget *parent):QWidget(parent)
 	connect(this->receiver,SIGNAL(newPeer(QString)),this,SLOT(newPeer(QString)));
 	connect(this->receiver,SIGNAL(lostPeer(QString)),this,SLOT(lostPeer(QString)));
 
-	this->timer=new QTimer();
+	this->timer=new QTimer(this);
 	connect(this->timer,SIGNAL(timeout()),this->receiver,SLOT(ping()));
 	this->timer->setInterval(250);
 	this->timer->start();
@@ -103,22 +103,7 @@ Window::~Window(void)
 	QSettings set;
 	set.setValue("window_pos",this->pos());
 	set.setValue("window_dim",this->size());
-
 	this->timer->stop();
-	delete this->receiver;
-	delete this->timer;
-	delete this->layout;
-	delete this->traymenu;
-	delete this->quitaction;
-	delete this->tray;
-	delete this->label;
-	delete this->namechanger;
-	QList<QListWidgetItem *> list=this->peers.values();
-	foreach(QListWidgetItem *item,list)
-	{
-		delete item;
-	}
-	delete this->list;
 }
 
 void Window::closeEvent(QCloseEvent *event)

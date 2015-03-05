@@ -28,7 +28,7 @@
 #include <QtCore>
 #include <QtNetwork>
 
-Receiver::Receiver(void)
+Receiver::Receiver(QObject *parent):QObject(parent)
 {
 	this->peers=QMap<QString,QPair<int,QString>>();
 	this->socket=new QUdpSocket();
