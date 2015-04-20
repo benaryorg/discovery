@@ -27,7 +27,7 @@ INCLUDEPATH += src
 OBJECTS_DIR = build/obj
 MOC_DIR = build/moc
 
-QT += core gui widgets network svg
+QT += core gui widgets network
 CONFIG += release qt
 CONFIG -= debug
 
