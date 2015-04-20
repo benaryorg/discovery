@@ -30,7 +30,7 @@
 
 Receiver::Receiver(QObject *parent):QObject(parent)
 {
-	this->peers=QMap<QString,QPair<int,QString>>();
+	this->peers=QMultiMap<QString,QPair<QHostAddress,int>>();
 	this->socket=new QUdpSocket();
 
 	connect(this->socket,SIGNAL(readyRead()),this,SLOT(udpPacket()));
@@ -45,13 +45,18 @@ Receiver::~Receiver(void)
 	delete this->socket;
 }
 
-QString Receiver::getIp(QString name)
+QList<QHostAddress> Receiver::getIps(QString name)
 {
+	QList<QHostAddress> list;
 	if(!this->peers.contains(name))
 	{
-		return QString();
+		return list;
 	}
-	return this->peers[name].second;
+	for(QPair<QHostAddress,int> p:this->peers.values(name))
+	{
+		list<<p.first;
+	}
+	return list;
 }
 
 void Receiver::ping(QHostAddress dest,QByteArray msg)
@@ -72,10 +77,13 @@ void Receiver::ping(QHostAddress dest,QByteArray msg)
 	}
 	foreach(QString key,this->peers.keys())
 	{
-		if(this->peers[key].first++>20)
+		for(QPair<QHostAddress,int> p:this->peers.values(key))
 		{
-			emit lostPeer(key);
-			this->peers.remove(key);
+			if(p.second++>20)
+			{
+				emit lostPeer(key);
+				this->peers.remove(key,p);
+			}
 		}
 	}
 	if(this->socket->writeDatagram(msg,dest,13370)==-1)
@@ -106,14 +114,26 @@ void Receiver::message(QHostAddress peer,QByteArray message)
 {
 	if(message.startsWith("pong")||message.startsWith("ping"))
 	{
-		QString name=message.length()>4?message.mid(4):peer.toString();
-		if(!this->peers.contains(name))
+		QString name=message.length()>4?message.mid(4):"unknown";
+		bool contained=this->peers.contains(name);
+		if(contained)
 		{
-			this->peers[name]=QPair<int,QString>();
-			this->peers[name].second=peer.toString();
+			contained=false;
+			for(QPair<QHostAddress,int> p:this->peers.values(name))
+			{
+				if(p.first==peer)
+				{
+					p.second=0;
+					contained=true;
+				}
+			}
+		}
+		if(!contained)
+		{
+			this->peers.insert(name,QPair<QHostAddress,int>(peer,0));
 			emit newPeer(name);
 		}
-		this->peers[name].first=0;
+		
 		if(message.startsWith("ping"))
 		{
 			this->ping(peer,QByteArray("pong").append(QSettings().value("name","").toString()));

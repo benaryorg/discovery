@@ -143,7 +143,7 @@ void Window::openWindow(void)
 
 void Window::copy(QListWidgetItem *item)
 {
-	QApplication::clipboard()->setText(this->receiver->getIp(item->text()));
+	//QApplication::clipboard()->setText(this->receiver->getIps(item)); TODO:fix
 	if(this->tray->isVisible()&&QSettings().value("notifications",true).toBool())
 	{
 		this->tray->showMessage(tr("Copied"),tr("You just copied an IP!"),QSystemTrayIcon::Information,2500);

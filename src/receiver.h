@@ -37,7 +37,7 @@ public:
 	Receiver(QObject *parent=0);
 	~Receiver(void);
 
-	QString getIp(QString name);
+	QList<QHostAddress> getIps(QString name);
 public slots:
 	void ping(QHostAddress dest=QHostAddress("255.255.255.255"),QByteArray msg=QByteArray("ping"));
 	void udpPacket(void);
@@ -46,7 +46,7 @@ signals:
 	void newPeer(QString peer);
 	void lostPeer(QString peer);
 private:
-	QMap<QString,QPair<int,QString>> peers;
+	QMultiMap<QString,QPair<QHostAddress,int>> peers;
 	QUdpSocket *socket;
 };
 
