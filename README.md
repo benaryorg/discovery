@@ -1,13 +1,13 @@
 # What is _discovery_?
 
-Discovery is a simple standalone program to find your computers in your LAN/VPN
-or whatever network.
+_discovery_ is a simple standalone program to find your computers in your LAN/VPN
+or whatever network and copy their IPs with a double click.
 
 # Compilation
 
 ## Generating Makefiles
 
-Only run once:
+Run once:
 
 	$ qmake
 
@@ -19,7 +19,7 @@ Only needs to be run if the language files changed:
 
 ## Building
 
-Run always:
+Always run:
 
 	$ make
 
