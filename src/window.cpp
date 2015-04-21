@@ -39,8 +39,6 @@ Window::Window(QWidget *parent):QWidget(parent)
 {
 	QSettings set;
 
-	this->peers=QMap<QString,QListWidgetItem *>();
-
 	this->setWindowTitle(tr("Peers"));
 	this->move(set.value("window_pos",QPoint(0,0)).value<QPoint>());
 	this->resize(set.value("window_dim",QSize(192,300)).value<QSize>());
@@ -48,8 +46,9 @@ Window::Window(QWidget *parent):QWidget(parent)
 	this->layout=new QVBoxLayout(this);
 	this->setLayout(this->layout);
 
-	this->list=new QListWidget(this);
-	connect(this->list,SIGNAL(itemDoubleClicked(QListWidgetItem *)),this,SLOT(copy(QListWidgetItem *)));
+	this->list=new QTreeWidget(this);
+	this->list->setHeaderHidden(true);
+	connect(this->list,SIGNAL(doubleClicked(const QModelIndex &)),this,SLOT(copy(const QModelIndex &)));
 
 	this->label=new QLabel(tr("Double click an entry to copy it."),this);
 
@@ -122,7 +121,12 @@ void Window::newPeer(QString peer)
 	{
 		this->tray->showMessage(tr("New Peer"),tr("A wild %1 appears!").arg(peer),QSystemTrayIcon::Information,2500);
 	}
-	this->peers[peer]=new QListWidgetItem(peer,this->list);
+	delete this->peers[peer];
+	this->peers.insert(peer,new QTreeWidgetItem(this->list,QStringList(peer)));
+	for(QString ip:this->receiver->getIps(peer))
+	{
+		new QTreeWidgetItem(this->peers[peer],QStringList(ip));
+	}
 }
 
 void Window::lostPeer(QString peer)
@@ -141,12 +145,15 @@ void Window::openWindow(void)
 	this->raise();
 }
 
-void Window::copy(QListWidgetItem *item)
+void Window::copy(const QModelIndex &index)
 {
-	//QApplication::clipboard()->setText(this->receiver->getIps(item)); TODO:fix
-	if(this->tray->isVisible()&&QSettings().value("notifications",true).toBool())
+	if(index.parent().isValid())
 	{
-		this->tray->showMessage(tr("Copied"),tr("You just copied an IP!"),QSystemTrayIcon::Information,2500);
+		QApplication::clipboard()->setText(index.model()->data(index).toString());
+		if(this->tray->isVisible()&&QSettings().value("notifications",true).toBool())
+		{
+			this->tray->showMessage(tr("Copied"),tr("You just copied an IP!"),QSystemTrayIcon::Information,2500);
+		}
 	}
 }
 

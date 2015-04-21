@@ -37,7 +37,7 @@ public:
 	Receiver(QObject *parent=0);
 	~Receiver(void);
 
-	QList<QHostAddress> getIps(QString name);
+	QStringList getIps(QString name);
 public slots:
 	void ping(QHostAddress dest=QHostAddress("255.255.255.255"),QByteArray msg=QByteArray("ping"));
 	void udpPacket(void);

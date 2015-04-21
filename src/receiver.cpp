@@ -45,16 +45,16 @@ Receiver::~Receiver(void)
 	delete this->socket;
 }
 
-QList<QHostAddress> Receiver::getIps(QString name)
+QStringList Receiver::getIps(QString name)
 {
-	QList<QHostAddress> list;
+	QStringList list;
 	if(!this->peers.contains(name))
 	{
 		return list;
 	}
 	for(QPair<QHostAddress,int> p:this->peers.values(name))
 	{
-		list<<p.first;
+		list<<p.first.toString();
 	}
 	return list;
 }

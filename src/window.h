@@ -32,7 +32,7 @@
 #include <QWidget>
 #include <QSystemTrayIcon>
 #include <QVBoxLayout>
-#include <QListWidget>
+#include <QTreeWidget>
 #include <QLabel>
 #include <QPushButton>
 #include <QAction>
@@ -52,16 +52,16 @@ public slots:
 	void lostPeer(QString peer);
 	void iconActivated(QSystemTrayIcon::ActivationReason reason);
 	void openWindow(void);
-	void copy(QListWidgetItem *item);
+	void copy(const QModelIndex &index);
 	void changeName(void);
 	void toggleNotifications(void);
 private:
-	QMap<QString,QListWidgetItem *> peers;
+	QMap<QString,QTreeWidgetItem *> peers;
 	Receiver *receiver;
 	QTimer *timer;
 	QSystemTrayIcon *tray;
 	QVBoxLayout *layout;
-	QListWidget *list;
+	QTreeWidget *list;
 	QLabel *label;
 	QAction *quitaction;
 	QMenu *traymenu;
